@@ -37,7 +37,7 @@ int main() {
     input.seekg(0, ios::beg);
 
     //Ask user for amount of rows per csv they would like
-    cout << "There are currently : " << (total_lines - 1) << " rows" << endl;
+    cout << "There are currently : " << (total_lines) << " rows" << endl;
     cout << "Enter the maximum number of rows you'd like per output file : ";
     cin >> split_by_amount;
     //Calculate the total files to be generated

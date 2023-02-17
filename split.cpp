@@ -5,32 +5,34 @@
 
 using namespace std;
 
-
 void split(unsigned int total_number_of_rows, unsigned int split_by_amount) {
-
+    //Read from input.csv again
     ifstream input("input.csv");
-    if(!input.is_open()){
+    //If file does not open, output an error
+    if (!input.is_open()) {
         cerr << "Error opening file" << endl;
+        return;
     }
-
-    size_t count{};
-
+    //Define a row that will change values in loop
     string line;
+    //Create a vector of output files needed
+    vector<ofstream> outputs;
 
-    unsigned int total_files_needed = (total_number_of_rows / split_by_amount);
-
-    vector<ofstream> outputs(total_files_needed);
-
-    while(getline(input, line)){
-        for(int i {}; i < total_files_needed; i++) {
-            string file_name = "file" + to_string(i) + ".csv";
-            outputs[i].open(file_name);
-            while(count < split_by_amount){
-                outputs[i] << line << endl;
-                count++;
-            }
-            count = 0;
-        }
+    // Open output files
+    for (int i = 0; i < total_number_of_rows / split_by_amount; i++) {
+        string file_name = "file" + to_string(i) + ".csv";
+        outputs.emplace_back(file_name);
     }
 
+    // Split input file into output files
+    int count = 0;
+    while (getline(input, line)) {
+        outputs[count / split_by_amount] << line << endl;
+        count++;
+    }
+
+    // Close output files
+    for (auto& output : outputs) {
+        output.close();
+    }
 }

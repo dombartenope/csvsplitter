@@ -18,10 +18,18 @@ void split(unsigned int total_number_of_rows, unsigned int split_by_amount) {
     //Create a vector of output files needed
     vector<ofstream> outputs;
 
+    unsigned int remainder = total_number_of_rows % split_by_amount;
     // Open output files
-    for (int i = 0; i < total_number_of_rows / split_by_amount; i++) {
-        string file_name = "file" + to_string(i) + ".csv";
-        outputs.emplace_back(file_name);
+    if(remainder == 0) {
+        for (int i = 0; i < total_number_of_rows / split_by_amount; i++) {
+            string file_name = "file" + to_string(i) + ".csv";
+            outputs.emplace_back(file_name);
+        }
+    } else {
+        for (int i = 0; i < total_number_of_rows / split_by_amount + 1; i++) {
+            string file_name = "file" + to_string(i) + ".csv";
+            outputs.emplace_back(file_name);
+        }
     }
 
     // Split input file into output files

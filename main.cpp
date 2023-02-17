@@ -17,9 +17,14 @@ int main() {
     
     //Open input file as 'input'
     bool file_exists = true;
-    ifstream input("input.csv");
+    string provided_file_path;
+    cout << endl;
+    cout << "Enter file path or drag and drop your csv file here and hit enter when done" << endl;
+    cin >> provided_file_path;
+    cout << endl;
+    ifstream input(provided_file_path);
     if(!input.is_open()){
-        cerr << "Please add an input file, and re-run..." << endl;
+        cerr << "File failed to load, please try again..." << endl;
         file_exists = false;
     }
     while(file_exists) {
@@ -39,14 +44,18 @@ int main() {
         input.seekg(0, ios::beg);
 
         //Ask user for amount of rows per csv they would like
-        cout << "There are currently : " << (total_lines) << " rows" << endl;
+        cout << "\033[35m" << "There are currently : " << (total_lines) << " rows" << "\033[0m" << endl;
         cout << "Enter the maximum number of rows you'd like per output file : ";
         cin >> split_by_amount;
         //Calculate the total files to be generated
         unsigned int remainder = total_lines % split_by_amount;
-        cout << "Splitting into " <<  (remainder == 0 ? total_lines / split_by_amount : total_lines / split_by_amount + 1) << " output files" << endl;
+        cout << "\033[35m" << "Splitting into " <<  (remainder == 0 ? total_lines / split_by_amount : total_lines / split_by_amount + 1) << " output files" << "\033[0m" << endl;
+        cout << "\033[35m" << "Check your input file's directory to view outputs..." << "\033[0m" << endl;
+        cout << endl;
+
         //Run through Split function to create outputs
-        split(total_lines, split_by_amount);
+        split(provided_file_path, total_lines, split_by_amount);
+        file_exists = false;
     }
 
     return 0;

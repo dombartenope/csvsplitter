@@ -2,12 +2,16 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <filesystem>
 
 using namespace std;
+namespace fs = filesystem;
 
-void split(unsigned int total_number_of_rows, unsigned int split_by_amount) {
+void split(const string& provided_file_path, unsigned int total_number_of_rows, unsigned int split_by_amount) {
+    fs::path input_file_path(provided_file_path);
+    fs::path output_dir_path = input_file_path.parent_path();
     //Read from input.csv again
-    ifstream input("input.csv");
+    ifstream input(provided_file_path);
     //If file does not open, output an error
     if (!input.is_open()) {
         cerr << "Error opening file" << endl;
@@ -22,13 +26,13 @@ void split(unsigned int total_number_of_rows, unsigned int split_by_amount) {
     // Open output files
     if(remainder == 0) {
         for (int i = 0; i < total_number_of_rows / split_by_amount; i++) {
-            string file_name = "file" + to_string(i) + ".csv";
-            outputs.emplace_back(file_name);
+            fs::path file_path = output_dir_path / ("file" + to_string(i) + ".csv");
+            outputs.emplace_back(file_path);
         }
     } else {
         for (int i = 0; i < total_number_of_rows / split_by_amount + 1; i++) {
-            string file_name = "file" + to_string(i) + ".csv";
-            outputs.emplace_back(file_name);
+            fs::path file_path = output_dir_path / ("file" + to_string(i) + ".csv");
+            outputs.emplace_back(file_path);
         }
     }
 
